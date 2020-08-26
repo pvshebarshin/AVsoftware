@@ -1,6 +1,6 @@
 #include "mainwidget.h"
 #include <department.h>
-#include <ui_centralwidget.h>
+#include <ui_mainwidget.h>
 
 CentralWidget::CentralWidget(QWidget *parent) : QWidget(parent), ui(new Ui::CentralWidget)
 {

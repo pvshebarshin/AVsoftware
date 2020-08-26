@@ -1,5 +1,5 @@
 #include "employeecreator.h"
-#include "ui_employeeeditor.h"
+#include "ui_employeecreator.h"
 
 EmployeeEditor::EmployeeEditor(Employee *employee, QWidget *parent) :
     QDialog(parent),
