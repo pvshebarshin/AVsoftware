@@ -29,7 +29,7 @@
    <property name="sizeConstraint">
     <enum>QLayout::SetMaximumSize</enum>
    </property>
-   <item row="6" column="4">
+   <item row="4" column="4">
     <widget class="QPushButton" name="buttonRemoveDepartment">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -162,7 +162,7 @@
      </attribute>
     </widget>
    </item>
-   <item row="5" column="4">
+   <item row="6" column="4">
     <widget class="QPushButton" name="buttonRemoveEmploee">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
@@ -201,7 +201,7 @@
      </property>
     </widget>
    </item>
-   <item row="4" column="4">
+   <item row="5" column="4">
     <widget class="QPushButton" name="buttonAddEmploee">
      <property name="sizePolicy">
       <sizepolicy hsizetype="Preferred" vsizetype="Fixed">
