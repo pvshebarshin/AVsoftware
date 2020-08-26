@@ -1,6 +1,5 @@
 #include "employee.h"
 
-
 Employee::Employee(QString name, QString surname, QString middleName,
                    QString function, uint32_t salary) noexcept
 {

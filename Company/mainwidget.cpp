@@ -4,26 +4,26 @@
 
 CentralWidget::CentralWidget(QWidget *parent) : QWidget(parent), ui(new Ui::CentralWidget)
 {
-    ui->setupUi(this);
-    ui->view->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
-    ui->buttonAddEmploee->setDisabled(true);
-    ui->buttonRemoveEmploee->setDisabled(true);
-    ui->buttonRemoveDepartment->setDisabled(true);
+    this->ui->setupUi(this);
+    this->ui->view->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
+    this->ui->buttonAddEmploee->setDisabled(true);
+    this->ui->buttonRemoveEmploee->setDisabled(true);
+    this->ui->buttonRemoveDepartment->setDisabled(true);
 
-    connect(ui->buttonAddEmploee, SIGNAL(clicked()), this, SIGNAL(addEmployee()));
-    connect(ui->buttonRemoveEmploee, SIGNAL(clicked()), this, SIGNAL(removeEmployee()));
-    connect(ui->buttonRemoveDepartment, SIGNAL(clicked()), this, SIGNAL(removeDepartment()));
+    connect(this->ui->buttonAddEmploee, SIGNAL(clicked()), this, SIGNAL(addEmployee()));
+    connect(this->ui->buttonRemoveEmploee, SIGNAL(clicked()), this, SIGNAL(removeEmployee()));
+    connect(this->ui->buttonRemoveDepartment, SIGNAL(clicked()), this, SIGNAL(removeDepartment()));
 }
 
-void CentralWidget::sendAddDepartment()
+void CentralWidget::sendAddDep()
 {
-    QString str = ui->lineNameDepartmnt->text().trimmed();
+    QString str = this->ui->lineNameDepartmnt->text().trimmed();
     emit addDepartment(str);
 }
 
-void CentralWidget::sendEditDepartment()
+void CentralWidget::sendEditDep()
 {
-    QString str = ui->lineName->text().trimmed();
+    QString str = this->ui->lineName->text().trimmed();
     emit editDepartment(str);
 }
 
@@ -53,22 +53,22 @@ void CentralWidget::setEnableButtons()
 
 QModelIndex CentralWidget::currentIndex() const
 {
-    return current;
+    return this->current;
 }
 
 void CentralWidget::setDep(QString name , uint32_t count, uint32_t salary)
 {
-    ui->lineName->setText(name.trimmed());
-    ui->lCount->setText(QString::number(count));
-    ui->lSalary->setText(QString::number(salary));
+    this->ui->lineName->setText(name.trimmed());
+    this->ui->lCount->setText(QString::number(count));
+    this->ui->lSalary->setText(QString::number(salary));
 }
 
 QTreeView *CentralWidget::view()
 {
-    return ui->view;
+    return this->ui->view;
 }
 
 CentralWidget::~CentralWidget()
 {
-    delete ui;
+    delete this->ui;
 }

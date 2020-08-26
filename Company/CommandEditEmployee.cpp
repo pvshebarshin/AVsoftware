@@ -16,7 +16,7 @@ CommandEditEmployee::CommandEditEmployee(Company* company, Department* departmen
     this->newMiddleName= newMiddleName;
     this->newFunction = newFunction;
     this->newSalary = newSalary;
-    this->newId = newName + newSurname + newMiddleName + newFunction;
+    this->newId = newName + ' ' + newSurname + ' ' + newMiddleName;
 }
 
 void CommandEditEmployee::undo()

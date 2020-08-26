@@ -35,8 +35,8 @@ signals:
 
 public slots:
     void setEnableButtons();
-    void sendAddDepartment();
-    void sendEditDepartment();
+    void sendAddDep();
+    void sendEditDep();
 
 private:
      Ui::CentralWidget* ui;

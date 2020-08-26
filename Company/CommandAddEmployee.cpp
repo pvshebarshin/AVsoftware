@@ -10,7 +10,7 @@ CommandAddEmployee::CommandAddEmployee(Company *company, Department *department,
     this->middleName = middleName;
     this->function = function;
     this->salary = salary;
-    this->id = name + surname + middleName + function;
+    this->id = name + ' ' + surname + ' ' + middleName;
 }
 
 void CommandAddEmployee::execute()

@@ -159,20 +159,20 @@ void MainWindow::saveFile()
                 writer.writeStartDocument();
                 writer.writeStartElement("departments");
 
-                QMapIterator<QString, Department*> i (*(this->company)->getDepartments());
+                QMapIterator<QString, Department*> iter (*(this->company)->getDepartments());
 
-                while(i.hasNext())
+                while(iter.hasNext())
                 {
-                    i.next();
-                    Department *department = i.value();
+                    iter.next();
+                    Department *department = iter.value();
                     writer.writeStartElement("department");
                     writer.writeAttribute("name", department->getName());
-                    QMapIterator<QString, Employee*> it (*department->getEmployees());
+                    QMapIterator<QString, Employee*> iterator (*department->getEmployees());
                     writer.writeStartElement("employments");
-                    while(it.hasNext())
+                    while(iterator.hasNext())
                     {
-                        it.next();
-                        Employee* employee = it.value();
+                        iterator.next();
+                        Employee* employee = iterator.value();
                         writer.writeStartElement("employment");
                         writer.writeTextElement("surname", employee->getSurname());
                         writer.writeTextElement("name", employee->getName());
