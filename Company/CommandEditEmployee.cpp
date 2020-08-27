@@ -33,7 +33,6 @@ void CommandEditEmployee::execute()
     this->department = this->company->getDepartments()->value(this->departmentName);
     this->employee = this->department->getEmployees()->value(this->id);
     if(this->employee)
-        this->department->editEmployee(this->id , this->newName, this->newSurname,
+        this->department->editEmployee(this->id, this->newName, this->newSurname,
                             this->newMiddleName, this->newFunction, this->newSalary);
-
 }
