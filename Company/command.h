@@ -5,7 +5,7 @@
 class Command
 {
 public:
-    Command(Company * company = nullptr, Department * department = nullptr, Employee* employee = nullptr);
+    Command(Company* company = nullptr, Department* department = nullptr, Employee* employee = nullptr);
     virtual ~Command() = default;
 
     virtual void execute() = 0;

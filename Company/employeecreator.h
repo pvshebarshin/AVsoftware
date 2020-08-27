@@ -1,5 +1,5 @@
-#ifndef EMPLOYEEEDITOR_H
-#define EMPLOYEEEDITOR_H
+#ifndef EMPLOYEECREATOR_H
+#define EMPLOYEECREATOR_H
 #include <QDialog>
 #include <QRegExpValidator>
 #include <QStringList>

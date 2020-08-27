@@ -1,5 +1,10 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
+#include <QMainWindow>
+#include <QObject>
+#include <QtWidgets>
+#include <QFile>
+#include <QtXml>
 #include "company.h"
 #include "commandAddDepartment.h"
 #include "commandRemoveDepartment.h"
@@ -9,11 +14,6 @@
 #include "commandEditDepartment.h"
 #include "mainwidget.h"
 #include "employeecreator.h"
-#include <QMainWindow>
-#include <QObject>
-#include <QtWidgets>
-#include <QFile>
-#include <QtXml>
 
 class MainWindow : public QMainWindow
 {

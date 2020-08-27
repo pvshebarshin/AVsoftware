@@ -1,13 +1,13 @@
 #ifndef COMMANDREMOVEDEPARTMENT_H
 #define COMMANDREMOVEDEPARTMENT_H
+#include <QString>
 #include"command.h"
 #include"company.h"
-#include <QString>
 
 class CommandRemoveDepartment : public Command
 {
 public:
-    CommandRemoveDepartment(Company *company, Department* department);
+    CommandRemoveDepartment(Company* company, Department* department);
     void undo() override;
     void execute() override;
 

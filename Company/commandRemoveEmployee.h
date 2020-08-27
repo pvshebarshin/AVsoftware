@@ -6,7 +6,7 @@
 class CommandRemoveEmployee : public Command
 {
 public:
-    CommandRemoveEmployee(Company * company, Department* department, Employee * employee);
+    CommandRemoveEmployee(Company* company, Department* department, Employee* employee);
     void execute() override;
     void undo() override;
 

@@ -1,13 +1,13 @@
 #ifndef COMMANDADDDEPARTMENT_H
 #define COMMANDADDDEPARTMENT_H
+#include <QString>
 #include "command.h"
 #include "company.h"
-#include <QString>
 
 class CommandAddDepartment : public Command
 {
 public:
-    CommandAddDepartment(Company *company, QString name);
+    CommandAddDepartment(Company* company, QString name);
     void execute() override;
     void undo() override;
 

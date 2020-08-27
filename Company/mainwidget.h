@@ -1,5 +1,5 @@
-#ifndef CENTRALWIDGET_H
-#define CENTRALWIDGET_H
+#ifndef MAINWIDGET_H
+#define MAINWIDGET_H
 #include <QObject>
 #include <QtWidgets>
 
