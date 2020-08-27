@@ -58,7 +58,7 @@ void MainWindow::createActions()
 void MainWindow::addEmployee()
 {
     QStringList data = this->employeeEditor->getData();
-    CommandAddEmployee* command = new CommandAddEmployee(this->company, this->currentDepartment, data[0], data[1], data[2], data[3], data[4].toInt());
+    CommandAddEmployee* command = new CommandAddEmployee(this->company, this->currentDepartment, data[0], data[1], data[2], data[3], data[4].toUInt());
     executeCommand(command);
 }
 
@@ -78,7 +78,7 @@ void MainWindow::editEmployee()
 {
     QStringList data = this->employeeEditor->getData();
     CommandEditEmployee* command = new CommandEditEmployee(this->company, this->currentDepartment,
-                    this->currentEmployee, data[0], data[1], data[2], data[3], data[4].toInt());
+                    this->currentEmployee, data[0], data[1], data[2], data[3], data[4].toUInt());
     executeCommand(command);
     if(this->employeeEditor != nullptr)
     {
@@ -91,7 +91,7 @@ void MainWindow::editEmployee()
 
 void MainWindow::removeEmployee()
 {
-    CommandRemoveEmployee* command = new CommandRemoveEmployee(company, currentDepartment, currentEmployee);
+    CommandRemoveEmployee* command = new CommandRemoveEmployee(this->company, this->currentDepartment, this->currentEmployee);
     executeCommand(command);
 }
 
@@ -225,9 +225,9 @@ void MainWindow::newCompany()
 
 void MainWindow::openNewEployeeDialog()
 {
-    employeeEditor = new EmployeeEditor();
-    connect(employeeEditor, &EmployeeEditor::accepted, this, &MainWindow::addEmployee);
-    employeeEditor->show();
+    this->employeeEditor = new EmployeeEditor();
+    connect(this->employeeEditor, &EmployeeEditor::accepted, this, &MainWindow::addEmployee);
+    this->employeeEditor->show();
 }
 
 void MainWindow::setCurrentDepartment(const QModelIndex &index)

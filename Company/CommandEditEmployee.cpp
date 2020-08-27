@@ -1,7 +1,7 @@
 #include "commandEditEmployee.h"
 
 CommandEditEmployee::CommandEditEmployee(Company* company, Department* department, Employee* employee,
-        QString newName,QString newSurname, QString newMiddleName,QString newFunction, int newSalary)
+        QString newName, QString newSurname, QString newMiddleName,QString newFunction, int newSalary)
     :Command(company, department, employee)
 {
     this->departmentName = department->getName();

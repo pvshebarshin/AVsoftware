@@ -30,21 +30,21 @@ void CentralWidget::sendEditDep()
 void CentralWidget::setEnableButtons()
 {
     if(ui->view->selectionModel()->hasSelection()){
-        current = ui->view->selectionModel()->selectedIndexes().first().siblingAtColumn(0);
+        this->current = ui->view->selectionModel()->selectedIndexes().first().siblingAtColumn(0);
         if(current.parent() == QModelIndex()){
             ui->buttonAddEmploee->setEnabled(true);
             ui->buttonRemoveDepartment->setEnabled(true);
             ui->buttonRemoveEmploee->setEnabled(false);
-            emit currentDepartment(current);
+            emit currentDepartment(this->current);
         }else{
             ui->buttonAddEmploee->setEnabled(false);
             ui->buttonRemoveEmploee->setEnabled(true);
             ui->buttonRemoveDepartment->setEnabled(false);
-            emit currentDepartment(current.parent());
-            emit currentEmployee(current);
+            emit currentDepartment(this->current.parent());
+            emit currentEmployee(this->current);
         }
     }else{
-        current = QModelIndex();
+        this->current = QModelIndex();
         ui->buttonAddEmploee->setEnabled(false);
         ui->buttonRemoveEmploee->setEnabled(false);
         ui->buttonRemoveDepartment->setEnabled(false);
