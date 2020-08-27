@@ -21,14 +21,14 @@ uint32_t Company::size() const noexcept
     return this->departments->size();
 }
 
-QMap<QString, Department *> *Company::getDepartments() const noexcept
+QMap<QString, Department*>* Company::getDepartments() const noexcept
 {
     return this->departments;
 }
 
 Department* Company::addDepartment(QString name) noexcept
 {
-    Department * department = new Department(name);
+    Department* department = new Department(name);
     this->departments->insert(name, department);
     this->appendRow(department);
     QModelIndex in(index(department->row() , 3));
