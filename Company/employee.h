@@ -22,6 +22,7 @@ public:
     void setFunction(const QString &function) noexcept;
     void setSalary(uint32_t salary) noexcept;
     void setData(const QVariant &value, int role = Qt::UserRole + 1);
+    void setId(const QString &id);
 
 private:
     QString name;

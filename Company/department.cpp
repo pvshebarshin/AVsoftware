@@ -107,6 +107,7 @@ void Department::editEmployee(QString id, QString name, QString surname, QString
     model()->setData(in, this->averageSalary, Qt::DisplayRole);
 
     QString ID = name + ' ' + surname + ' ' + middleName;
+    employer->setId(ID);
 
     if(employer)
         this->employees->remove(id);
