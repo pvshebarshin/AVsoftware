@@ -13,13 +13,13 @@ public:
     ~Company() noexcept;
 
     uint32_t size() const noexcept;
-    QMap<QString, Department *> *getDepartments() const noexcept;
+    QMap<QString, Department*>* getDepartments() const noexcept;
 
     Department *addDepartment(QString name) noexcept;
 
     void removeDepartment(QString name) noexcept;
 
 private:
-    QMap<QString , Department*> *departments;
+    QMap<QString , Department*>* departments;
 };
 #endif
