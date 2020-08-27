@@ -3,7 +3,7 @@
 Company::Company() noexcept: QStandardItemModel()
 {
     QStringList list;
-    list << "Отдел" << "Должность" << "Зарплата" << "Средняя ЗП";
+    list << "Отдел" << "Должность" << "Зарплата" << "Средняя зарплата";
     setHorizontalHeaderLabels(list);
     this->departments = new QMap<QString , Department*>();
 }
