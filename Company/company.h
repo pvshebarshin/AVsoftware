@@ -15,7 +15,7 @@ public:
     uint32_t size() const noexcept;
     QMap<QString, Department*>* getDepartments() const noexcept;
 
-    Department *addDepartment(QString name) noexcept;
+    Department* addDepartment(QString name) noexcept;
 
     void removeDepartment(QString name) noexcept;
 

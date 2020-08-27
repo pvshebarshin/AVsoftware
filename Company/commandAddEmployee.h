@@ -8,8 +8,8 @@ class CommandAddEmployee : public Command
 public:
     CommandAddEmployee(Company* company, Department* department,QString name,
                        QString surname, QString middleName, QString function , uint32_t salary);
-    void execute();
-    void undo();
+    void execute() override;
+    void undo() override;
 
 private:
     QString departamentName;

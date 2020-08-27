@@ -27,7 +27,6 @@ public:
 
 private:
     QMap<QString, Employee*>* employees;
-
     QString name;
     uint32_t averageSalary;
     uint32_t countOfEmployers;
