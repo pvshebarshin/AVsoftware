@@ -4,7 +4,6 @@
 #include <QRegExpValidator>
 #include <QStringList>
 #include "employee.h"
-
 namespace Ui {
 class EmployeeEditor;
 }

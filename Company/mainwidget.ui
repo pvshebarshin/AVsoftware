@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>680</width>
-    <height>300</height>
+    <width>900</width>
+    <height>400</height>
    </rect>
   </property>
   <property name="sizePolicy">
@@ -61,7 +61,7 @@
       <enum>QLayout::SetFixedSize</enum>
      </property>
      <item row="0" column="0">
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="label_ND">
        <property name="layoutDirection">
         <enum>Qt::LeftToRight</enum>
        </property>
@@ -91,7 +91,7 @@
       </widget>
      </item>
      <item row="3" column="0">
-      <widget class="QLabel" name="label_5">
+      <widget class="QLabel" name="label_AVGS">
        <property name="text">
         <string>Средняя зарплата отдела:</string>
        </property>
@@ -105,7 +105,7 @@
       </widget>
      </item>
      <item row="2" column="0">
-      <widget class="QLabel" name="label_3">
+      <widget class="QLabel" name="label_CE">
        <property name="text">
         <string>Количество сотрудников:</string>
        </property>
@@ -184,7 +184,7 @@
       </sizepolicy>
      </property>
      <property name="placeholderText">
-      <string>Введите название отдела</string>
+      <string/>
      </property>
     </widget>
    </item>

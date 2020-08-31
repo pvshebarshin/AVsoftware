@@ -2,7 +2,6 @@
 #define MAINWIDGET_H
 #include <QObject>
 #include <QtWidgets>
-
 namespace Ui
 {
     class CentralWidget;
