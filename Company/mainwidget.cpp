@@ -29,41 +29,37 @@ void CentralWidget::sendEditDep()
 
 void CentralWidget::setEnableButtons()
 {
-    if(ui->view->selectionModel()->hasSelection()){
-        this->current = ui->view->selectionModel()->selectedIndexes().first().siblingAtColumn(0);
+    if(this->ui->view->selectionModel()->hasSelection()){
+        this->current = this->ui->view->selectionModel()->selectedIndexes().first().siblingAtColumn(0);
         if(current.parent() == QModelIndex()){
-            ui->buttonAddEmploee->setEnabled(true);
-            ui->buttonRemoveDepartment->setEnabled(true);
-            ui->buttonRemoveEmploee->setEnabled(false);
+            this->ui->buttonAddEmploee->setEnabled(true);
+            this->ui->buttonRemoveDepartment->setEnabled(true);
+            this->ui->buttonRemoveEmploee->setEnabled(false);
             emit currentDepartment(this->current);
         }else{
-            ui->buttonAddEmploee->setEnabled(false);
-            ui->buttonRemoveEmploee->setEnabled(true);
-            ui->buttonRemoveDepartment->setEnabled(false);
+            this->ui->buttonAddEmploee->setEnabled(false);
+            this->ui->buttonRemoveEmploee->setEnabled(true);
+            this->ui->buttonRemoveDepartment->setEnabled(false);
             emit currentDepartment(this->current.parent());
             emit currentEmployee(this->current);
         }
     }else{
         this->current = QModelIndex();
-        ui->buttonAddEmploee->setEnabled(false);
-        ui->buttonRemoveEmploee->setEnabled(false);
-        ui->buttonRemoveDepartment->setEnabled(false);
+        this->ui->buttonAddEmploee->setEnabled(false);
+        this->ui->buttonRemoveEmploee->setEnabled(false);
+        this->ui->buttonRemoveDepartment->setEnabled(false);
     }
 }
 
-QModelIndex CentralWidget::currentIndex() const
-{
-    return this->current;
-}
 
 void CentralWidget::setDep(QString name , uint32_t count, uint32_t salary)
 {
     this->ui->lineName->setText(name.trimmed());
-    this->ui->lCount->setText(QString::number(count));
-    this->ui->lSalary->setText(QString::number(salary));
+    this->ui->lableCount->setText(QString::number(count));
+    this->ui->lableSalary->setText(QString::number(salary));
 }
 
-QTreeView *CentralWidget::view()
+QTreeView *CentralWidget::view() const noexcept
 {
     return this->ui->view;
 }

@@ -79,7 +79,7 @@ void Employee::setData(const QVariant &value, int role)
     emitDataChanged();
 }
 
-void Employee::setId(const QString &id)
+void Employee::setId(const QString &id) noexcept
 {
     this->id = id;
 }

@@ -84,7 +84,7 @@
       </widget>
      </item>
      <item row="2" column="1">
-      <widget class="QLabel" name="lCount">
+      <widget class="QLabel" name="lableCount">
        <property name="text">
         <string>0</string>
        </property>
@@ -98,7 +98,7 @@
       </widget>
      </item>
      <item row="3" column="1">
-      <widget class="QLabel" name="lSalary">
+      <widget class="QLabel" name="lableSalary">
        <property name="text">
         <string>0</string>
        </property>

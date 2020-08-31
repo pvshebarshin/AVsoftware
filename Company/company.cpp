@@ -16,11 +16,6 @@ Company::~Company() noexcept
     this->departments->clear();
 }
 
-uint32_t Company::size() const noexcept
-{
-    return this->departments->size();
-}
-
 QMap<QString, Department*>* Company::getDepartments() const noexcept
 {
     return this->departments;

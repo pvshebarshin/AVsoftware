@@ -219,8 +219,7 @@ void MainWindow::newCompany()
     this->company = new Company();
     this->centralWidget->view()->setModel(company);
     this->centralWidget->setEnabled(true);
-    connect(this->centralWidget->view()->selectionModel(), &QItemSelectionModel::selectionChanged,
-            this->centralWidget, &CentralWidget::setEnableButtons);
+    connect(this->centralWidget->view()->selectionModel(), &QItemSelectionModel::selectionChanged, this->centralWidget, &CentralWidget::setEnableButtons);
 }
 
 void MainWindow::openNewEployeeDialog()
