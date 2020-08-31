@@ -9,7 +9,6 @@
 #define repeat 4
 
 std::mutex w, r, mutex1, mutex2;
-
 int value = 0;
 uint32_t readcount = 0, writecount = 0;
 
