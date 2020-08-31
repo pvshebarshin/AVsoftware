@@ -1,3 +1,0 @@
-C:/Projects/AVsoftware/AVsoftware/ReadersWriters/cmake-build-debug/CMakeFiles/ReadersWriters.dir
-C:/Projects/AVsoftware/AVsoftware/ReadersWriters/cmake-build-debug/CMakeFiles/edit_cache.dir
-C:/Projects/AVsoftware/AVsoftware/ReadersWriters/cmake-build-debug/CMakeFiles/rebuild_cache.dir
