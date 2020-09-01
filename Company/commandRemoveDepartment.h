@@ -23,6 +23,6 @@ public:
 
 private:
     QString departmentName;
-    QMap<QString, Employee> employees;
+    QMap<int, Employee> employees;
 };
 #endif

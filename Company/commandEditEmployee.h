@@ -9,7 +9,7 @@ public:
     Конструктор команды редактирующей данные работника
     */
     CommandEditEmployee(Company* company, Department* department, Employee* employee,
-        QString newName, QString newSurname, QString newMiddlename,QString newFunction, int newSalary);
+        QString newName, QString newSurname, QString newMiddlename, QString newFunction, uint32_t newSalary);
 
     /*
     Переопределенный метод родительского класса Command, возвращающий изначальные данные работника
@@ -27,14 +27,14 @@ private:
     QString surname;
     QString middleName;
     QString function;
-    QString id;
+    int id;
     uint32_t salary;
 
     QString newName;
     QString newSurname;
     QString newMiddleName;
     QString newFunction;
-    QString newId;
+    int newId;
     uint32_t newSalary;
 };
 #endif

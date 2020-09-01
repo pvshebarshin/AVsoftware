@@ -4,8 +4,8 @@ CommandRemoveDepartment::CommandRemoveDepartment(Company* company, Department* d
 {
     this->departmentName = department->getName();
 
-    QMap<QString, Employee*> map(*this->department->getEmployees());
-    QMapIterator<QString, Employee*> iterator(map);
+    QMap<int, Employee*> map(*this->department->getEmployees());
+    QMapIterator<int, Employee*> iterator(map);
 
     while (iterator.hasNext())
     {
@@ -19,7 +19,7 @@ void CommandRemoveDepartment::undo()
     if(this->company->getDepartments()->count(this->departmentName) == 0)
     {
         this->department = this->company->addDepartment(this->departmentName);
-        QMapIterator<QString, Employee> iterator(this->employees);
+        QMapIterator<int, Employee> iterator(this->employees);
         while (iterator.hasNext())
         {
             iterator.next();

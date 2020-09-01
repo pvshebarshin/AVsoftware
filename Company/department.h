@@ -33,7 +33,7 @@ public:
     /*
     Дает доступ к указателю на map из работников
     */
-    QMap<QString, Employee*>* getEmployees() const noexcept;
+    QMap<int, Employee*>* getEmployees() const noexcept;
 
     /*
     Устанавливает имя департамента
@@ -49,16 +49,16 @@ public:
     /*
     Удаляет работника из департамента(из map)
     */
-    void removeEmployee(QString id);
+    void removeEmployee(int id);
 
     /*
     Редактирование данных работника департамента
     */
-    void editEmployee(QString id, QString name, QString surname,
+    void editEmployee(int id, QString name, QString surname,
                       QString middleName, QString function, uint32_t salary);
 
 private:
-    QMap<QString, Employee*>* employees;
+    QMap<int, Employee*>* employees;
     QString name;
     uint32_t averageSalary;
     uint32_t countOfEmployers;

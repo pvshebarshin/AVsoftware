@@ -26,7 +26,7 @@ private:
     QString surname;
     QString middleName;
     QString function;
-    QString id;
+    int id;
     uint32_t salary;
 };
 #endif

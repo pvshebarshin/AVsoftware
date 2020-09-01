@@ -34,7 +34,9 @@ public:
     /*
     Получение уникального идентифекатора работника
     */
-    QString getId() const noexcept;
+    int getId() const noexcept;
+    static int getId(QString name, QString surname, QString middleName,
+                     QString function, uint32_t salary) noexcept;
 
     /*
     Получение зарплаты работника
@@ -74,14 +76,14 @@ public:
     /*
     Установка уникального идентификатора рабочего
     */
-    void setId(const QString &id) noexcept;
+    void setId(const int &id) noexcept;
 
 private:
     QString name;
     QString surname;
     QString middleName;
     QString function;
-    QString id;
+    int id;
     uint32_t salary;
 };
 #endif

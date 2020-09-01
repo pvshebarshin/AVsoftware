@@ -8,7 +8,10 @@ Employee::Employee(QString name, QString surname, QString middleName,
     this->middleName = middleName;
     this->function = function;
     this->salary = salary;
-    this->id = name + ' ' + surname + ' ' + middleName;
+    this->id = 0;
+    QString temp = name + surname + middleName + function + QString::number(salary);
+    for(int i = 0; i < temp.size(); ++i)
+        this->id += temp[i].unicode() + temp[i].unicode() / (i + 1);
 }
 
 QString Employee::getName() const noexcept
@@ -31,9 +34,18 @@ QString Employee::getFunction() const noexcept
     return this->function;
 }
 
-QString Employee::getId() const noexcept
+int Employee::getId() const noexcept
 {
     return this->id;
+}
+
+int Employee::getId(QString name, QString surname, QString middleName, QString function, uint32_t salary) noexcept
+{
+    QString temp = name + surname + middleName + function + QString::number(salary);
+    int ID = 0;
+    for(int i = 0; i < temp.size(); ++i)
+        ID += temp[i].unicode() + temp[i].unicode() / (i + 1);
+    return ID;
 }
 
 uint32_t Employee::getSalary() const noexcept
@@ -79,7 +91,7 @@ void Employee::setData(const QVariant &value, int role)
     emitDataChanged();
 }
 
-void Employee::setId(const QString &id) noexcept
+void Employee::setId(const int &id) noexcept
 {
     this->id = id;
 }

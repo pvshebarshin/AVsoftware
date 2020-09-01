@@ -4,13 +4,13 @@ Department::Department(QString name) noexcept: QStandardItem(name),
      averageSalary(0), countOfEmployers(0), salary(0)
 {
     this->name = name;
-    employees = new QMap<QString, Employee*>();
+    employees = new QMap<int, Employee*>();
     setColumnCount(3);
 }
 
 Department::~Department() noexcept
 {
-    QMapIterator<QString, Employee*> i(*this->employees);
+    QMapIterator<int, Employee*> i(*this->employees);
     while (i.hasNext())
     {
         i.next();
@@ -35,7 +35,7 @@ QString Department::getName() const noexcept
     return this->name;
 }
 
-QMap<QString, Employee *> *Department::getEmployees() const noexcept
+QMap<int, Employee *> *Department::getEmployees() const noexcept
 {
     return  this->employees;
 }
@@ -63,7 +63,7 @@ Employee *Department::addEmployee(QString name, QString surname,
     return employee;
 }
 
-void Department::removeEmployee(QString id)
+void Department::removeEmployee(int id)
 {
     Employee* employer = getEmployees()->value(id);
 
@@ -89,7 +89,7 @@ void Department::removeEmployee(QString id)
     this->employees->remove(id);
 }
 
-void Department::editEmployee(QString id, QString name, QString surname, QString middleName,
+void Department::editEmployee(int id, QString name, QString surname, QString middleName,
                               QString function, uint32_t salary)
 {
     Employee* employer = this->employees->value(id);
@@ -108,12 +108,11 @@ void Department::editEmployee(QString id, QString name, QString surname, QString
     QModelIndex in(model()->index(row() , 3));
     model()->setData(in, this->averageSalary, Qt::DisplayRole);
 
-    QString ID = name + ' ' + surname + ' ' + middleName;
-    employer->setId(ID);
+    employer->setId(Employee::getId(name, surname, middleName, function, salary));
 
     if(employer)
         this->employees->remove(id);
-    this->employees->insert(ID, employer);
+    this->employees->insert(Employee::getId(name, surname, middleName, function, salary), employer);
 
     employer->setData(surname + ' ' + name + ' ' + middleName, Qt::DisplayRole);
 }

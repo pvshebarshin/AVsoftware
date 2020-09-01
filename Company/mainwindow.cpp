@@ -58,7 +58,14 @@ void MainWindow::createActions()
 void MainWindow::addEmployee()
 {
     QStringList data = this->employeeEditor->getData();
-    CommandAddEmployee* command = new CommandAddEmployee(this->company, this->currentDepartment, data[0], data[1], data[2], data[3], data[4].toUInt());
+    if(this->company->getDepartments()->value(this->currentDepartment->getName())->getEmployees()
+            ->value(Employee::getId(data[0], data[1], data[2], data[3], data[4].toUInt())) != 0)
+    {
+        this->statusBar()->showMessage("Такой работник уже существует");
+        return;
+    }
+    CommandAddEmployee* command = new CommandAddEmployee(this->company, this->currentDepartment,
+                            data[0], data[1], data[2], data[3], data[4].toUInt());
     executeCommand(command);
 }
 
@@ -77,6 +84,13 @@ void MainWindow::editCompany(const QModelIndex &index)
 void MainWindow::editEmployee()
 {
     QStringList data = this->employeeEditor->getData();
+    if(this->company->getDepartments()->value(this->currentDepartment->getName())->getEmployees()
+            ->value(Employee::getId(data[0], data[1], data[2], data[3], data[4].toUInt())) != 0)
+    {
+        this->statusBar()->showMessage("Такой работник уже существует");
+        return;
+    }
+
     CommandEditEmployee* command = new CommandEditEmployee(this->company, this->currentDepartment,
                     this->currentEmployee, data[0], data[1], data[2], data[3], data[4].toUInt());
     executeCommand(command);
@@ -167,7 +181,7 @@ void MainWindow::saveFile()
                     Department *department = iter.value();
                     writer.writeStartElement("department");
                     writer.writeAttribute("name", department->getName());
-                    QMapIterator<QString, Employee*> iterator (*department->getEmployees());
+                    QMapIterator<int, Employee*> iterator (*department->getEmployees());
                     writer.writeStartElement("employments");
                     while(iterator.hasNext())
                     {

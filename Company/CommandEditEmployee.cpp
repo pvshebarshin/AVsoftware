@@ -1,7 +1,7 @@
 #include "commandEditEmployee.h"
 
 CommandEditEmployee::CommandEditEmployee(Company* company, Department* department, Employee* employee,
-        QString newName, QString newSurname, QString newMiddleName,QString newFunction, int newSalary)
+        QString newName, QString newSurname, QString newMiddleName, QString newFunction, uint32_t newSalary)
     :Command(company, department, employee)
 {
     this->departmentName = department->getName();
@@ -16,7 +16,7 @@ CommandEditEmployee::CommandEditEmployee(Company* company, Department* departmen
     this->newMiddleName= newMiddleName;
     this->newFunction = newFunction;
     this->newSalary = newSalary;
-    this->newId = newName + ' ' + newSurname + ' ' + newMiddleName;
+    this->newId = Employee::getId(newName, newSurname, newMiddleName, newFunction, newSalary);
 }
 
 void CommandEditEmployee::undo()
