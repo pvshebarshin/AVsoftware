@@ -181,8 +181,8 @@ void MainWindow::saveFile()
                     Department *department = iter.value();
                     writer.writeStartElement("department");
                     writer.writeAttribute("name", department->getName());
-                    QMapIterator<int, Employee*> iterator (*department->getEmployees());
                     writer.writeStartElement("employments");
+                    QMapIterator<int, Employee*> iterator (*department->getEmployees());
                     while(iterator.hasNext())
                     {
                         iterator.next();
