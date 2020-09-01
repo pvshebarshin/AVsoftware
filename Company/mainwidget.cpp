@@ -2,7 +2,7 @@
 #include <department.h>
 #include <ui_mainwidget.h>
 
-CentralWidget::CentralWidget(QWidget *parent) : QWidget(parent), ui(new Ui::CentralWidget)
+MainWidget::MainWidget(QWidget *parent) : QWidget(parent), ui(new Ui::MainWidget)
 {
     this->ui->setupUi(this);
     this->ui->view->header()->setSectionResizeMode(QHeaderView::ResizeToContents);
@@ -15,19 +15,19 @@ CentralWidget::CentralWidget(QWidget *parent) : QWidget(parent), ui(new Ui::Cent
     connect(this->ui->buttonRemoveDepartment, SIGNAL(clicked()), this, SIGNAL(removeDepartment()));
 }
 
-void CentralWidget::sendAddDep()
+void MainWidget::sendAddDep()
 {
     QString str = this->ui->lineNameDepartmnt->text().trimmed();
     emit addDepartment(str);
 }
 
-void CentralWidget::sendEditDep()
+void MainWidget::sendEditDep()
 {
     QString str = this->ui->lineName->text().trimmed();
     emit editDepartment(str);
 }
 
-void CentralWidget::setEnableButtons()
+void MainWidget::setEnableButtons()
 {
     if(this->ui->view->selectionModel()->hasSelection()){
         this->current = this->ui->view->selectionModel()->selectedIndexes().first().siblingAtColumn(0);
@@ -52,19 +52,19 @@ void CentralWidget::setEnableButtons()
 }
 
 
-void CentralWidget::setDep(QString name , uint32_t count, uint32_t salary)
+void MainWidget::setDep(QString name , uint32_t count, uint32_t salary)
 {
     this->ui->lineName->setText(name.trimmed());
     this->ui->lableCount->setText(QString::number(count));
     this->ui->lableSalary->setText(QString::number(salary));
 }
 
-QTreeView *CentralWidget::view() const noexcept
+QTreeView *MainWidget::view() const noexcept
 {
     return this->ui->view;
 }
 
-CentralWidget::~CentralWidget()
+MainWidget::~MainWidget()
 {
     delete this->ui;
 }

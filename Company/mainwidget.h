@@ -4,10 +4,10 @@
 #include <QtWidgets>
 namespace Ui
 {
-    class CentralWidget;
+    class MainWidget;
 }
 
-class CentralWidget : public QWidget
+class MainWidget : public QWidget
 {
     Q_OBJECT
 
@@ -15,12 +15,12 @@ public:
     /*
     Конструктор создающий treeview и логику работы с ним
     */
-    CentralWidget(QWidget *parent = 0);
+    MainWidget(QWidget *parent = 0);
 
     /*
     Деструктор, удаляющий ui
     */
-    ~CentralWidget();
+    ~MainWidget();
 
     /*
     Возврат ссылки на treeview
@@ -63,7 +63,7 @@ public slots:
     void sendEditDep();
 
 private:
-     Ui::CentralWidget* ui;
+     Ui::MainWidget* ui;
      QModelIndex current;
 };
 #endif

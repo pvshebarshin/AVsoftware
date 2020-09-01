@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
- <class>CentralWidget</class>
- <widget class="QWidget" name="CentralWidget">
+ <class>MainWidget</class>
+ <widget class="QWidget" name="MainWidget">
   <property name="geometry">
    <rect>
     <x>0</x>
@@ -237,7 +237,7 @@
   <connection>
    <sender>buttonAddDepartment</sender>
    <signal>clicked()</signal>
-   <receiver>CentralWidget</receiver>
+   <receiver>MainWidget</receiver>
    <slot>sendAddDep()</slot>
    <hints>
     <hint type="sourcelabel">
@@ -253,7 +253,7 @@
   <connection>
    <sender>lineName</sender>
    <signal>editingFinished()</signal>
-   <receiver>CentralWidget</receiver>
+   <receiver>MainWidget</receiver>
    <slot>sendEditDep()</slot>
    <hints>
     <hint type="sourcelabel">

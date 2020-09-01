@@ -4,20 +4,20 @@ MainWindow::MainWindow(QWidget *parent) noexcept : QMainWindow(parent), iterator
 {
     this->company = nullptr;
     this->currentDepartment = nullptr;
-    this->centralWidget = new CentralWidget();
-    setCentralWidget(this->centralWidget);
-    this->centralWidget->setEnabled(false);
+    this->mainWidget = new MainWidget();
+    setCentralWidget(this->mainWidget);
+    this->mainWidget->setEnabled(false);
     statusBar()->show();
     createActions();
 
-    connect(this->centralWidget, &CentralWidget::currentDepartment, this, &MainWindow::setCurrentDepartment);
-    connect(this->centralWidget, &CentralWidget::currentEmployee, this, &MainWindow::setCurrentEmployee);
-    connect(this->centralWidget, &CentralWidget::addDepartment, this, &MainWindow::addDepartment);
-    connect(this->centralWidget, &CentralWidget::addEmployee, this, &MainWindow::openNewEployeeDialog);
-    connect(this->centralWidget, &CentralWidget::removeEmployee, this, &MainWindow::removeEmployee);
-    connect(this->centralWidget, &CentralWidget::removeDepartment, this, &MainWindow::removeDepartment);
-    connect(this->centralWidget, &CentralWidget::editDepartment, this, &MainWindow::editDepartment);
-    connect(this->centralWidget->view(), &QTreeView::doubleClicked,this, &MainWindow::editCompany);
+    connect(this->mainWidget, &MainWidget::currentDepartment, this, &MainWindow::setCurrentDepartment);
+    connect(this->mainWidget, &MainWidget::currentEmployee, this, &MainWindow::setCurrentEmployee);
+    connect(this->mainWidget, &MainWidget::addDepartment, this, &MainWindow::addDepartment);
+    connect(this->mainWidget, &MainWidget::addEmployee, this, &MainWindow::openNewEployeeDialog);
+    connect(this->mainWidget, &MainWidget::removeEmployee, this, &MainWindow::removeEmployee);
+    connect(this->mainWidget, &MainWidget::removeDepartment, this, &MainWindow::removeDepartment);
+    connect(this->mainWidget, &MainWidget::editDepartment, this, &MainWindow::editDepartment);
+    connect(this->mainWidget->view(), &QTreeView::doubleClicked,this, &MainWindow::editCompany);
 }
 
 void MainWindow::createActions()
@@ -99,7 +99,7 @@ void MainWindow::editEmployee()
         this->employeeEditor->disconnect();
         this->employeeEditor->deleteLater();
     }
-    this->centralWidget->setDep(this->currentDepartment->getName(),
+    this->mainWidget->setDep(this->currentDepartment->getName(),
                 this->currentDepartment->getCountEmployees(), this->currentDepartment->getAverageSalary());
 }
 
@@ -231,9 +231,9 @@ void MainWindow::newCompany()
     if(!this->history.isEmpty())
         clearHistory();
     this->company = new Company();
-    this->centralWidget->view()->setModel(company);
-    this->centralWidget->setEnabled(true);
-    connect(this->centralWidget->view()->selectionModel(), &QItemSelectionModel::selectionChanged, this->centralWidget, &CentralWidget::setEnableButtons);
+    this->mainWidget->view()->setModel(company);
+    this->mainWidget->setEnabled(true);
+    connect(this->mainWidget->view()->selectionModel(), &QItemSelectionModel::selectionChanged, this->mainWidget, &MainWidget::setEnableButtons);
 }
 
 void MainWindow::openNewEployeeDialog()
@@ -246,7 +246,7 @@ void MainWindow::openNewEployeeDialog()
 void MainWindow::setCurrentDepartment(const QModelIndex &index)
 {
     this->currentDepartment = static_cast<Department*>(this->company->itemFromIndex(index));
-    this->centralWidget->setDep(this->currentDepartment->getName(), this->currentDepartment->getCountEmployees(),
+    this->mainWidget->setDep(this->currentDepartment->getName(), this->currentDepartment->getCountEmployees(),
                                 this->currentDepartment->getAverageSalary());
 }
 
@@ -280,7 +280,7 @@ void MainWindow::editDepartment(QString name)
     if(!this->company->getDepartments()->count(name)){
         CommandEditDepartment* command = new CommandEditDepartment(this->company, this->currentDepartment, name);
         executeCommand(command);
-        this->centralWidget->setDep(this->currentDepartment->getName(), this->currentDepartment->getCountEmployees(),
+        this->mainWidget->setDep(this->currentDepartment->getName(), this->currentDepartment->getCountEmployees(),
                                     this->currentDepartment->getAverageSalary());
     }else{
         this->statusBar()->showMessage("Недопустимая операция, такой отдел существует");
@@ -307,7 +307,7 @@ void MainWindow::undoCommand()
         if(this->iterator.hasPrevious())
         {
             this->iterator.previous()->undo();
-            this->centralWidget->setDep(this->currentDepartment->getName(),
+            this->mainWidget->setDep(this->currentDepartment->getName(),
                     this->currentDepartment->getCountEmployees(), this->currentDepartment->getAverageSalary());
         }
 }
@@ -318,7 +318,7 @@ void MainWindow::redoCommand()
         if(this->iterator.hasNext())
         {
             this->iterator.next()->execute();
-            this->centralWidget->setDep(this->currentDepartment->getName(),
+            this->mainWidget->setDep(this->currentDepartment->getName(),
                     this->currentDepartment->getCountEmployees(), this->currentDepartment->getAverageSalary());
         }
 }
@@ -333,7 +333,7 @@ void MainWindow::clearHistory()
 MainWindow::~MainWindow() noexcept
 {
     saveFile();
-    this->centralWidget->disconnect();
+    this->mainWidget->disconnect();
     clearHistory();
     delete this->company;
 }

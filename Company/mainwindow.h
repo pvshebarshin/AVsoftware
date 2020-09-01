@@ -97,7 +97,7 @@ private:
     Employee* currentEmployee;
     QList<Command*> history;
     QListIterator<Command*> iterator;
-    CentralWidget* centralWidget;
+    MainWidget* mainWidget;
     EmployeeEditor* employeeEditor;
     QUrl path;
 
