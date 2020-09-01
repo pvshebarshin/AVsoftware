@@ -1,6 +1,5 @@
 #include "department.h"
 
-
 Department::Department(QString name) noexcept: QStandardItem(name),
      averageSalary(0), countOfEmployers(0), salary(0)
 {
@@ -67,6 +66,9 @@ Employee *Department::addEmployee(QString name, QString surname,
 void Department::removeEmployee(QString id)
 {
     Employee* employer = getEmployees()->value(id);
+
+    if(!employer)
+        return;
 
     this->salary -= employer->getSalary();
     --this->countOfEmployers;

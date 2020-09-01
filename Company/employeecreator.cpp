@@ -7,7 +7,8 @@ EmployeeEditor::EmployeeEditor(Employee *employee, QWidget *parent) :
 {
     this->ui->setupUi(this);
     setModal(true);
-
+    if(employee == nullptr)
+        employee = new Employee();
     this->employee = employee;
     this->ui->lineSurname->setFocus();
     this->ui->lineSalary->setValidator(new QRegExpValidator(QRegExp("[1-9]{1}[0-9]{2,15}")));

@@ -23,6 +23,5 @@ void CommandAddEmployee::execute()
 
 void CommandAddEmployee::undo()
 {
-    if(this->department->getEmployees()->count(this->id))
-        this->department->removeEmployee(this->id);
+    this->department->removeEmployee(this->id);
 }

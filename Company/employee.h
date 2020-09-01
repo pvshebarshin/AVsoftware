@@ -8,8 +8,8 @@ public:
     /*
     Конструктор класса работника
     */
-    Employee(QString name, QString surname, QString middleName,
-             QString function, uint32_t salary) noexcept;
+    Employee(QString name = "", QString surname = "", QString middleName = "",
+             QString function = "", uint32_t salary = 0) noexcept;
 
     /*
     Получение имени работника
