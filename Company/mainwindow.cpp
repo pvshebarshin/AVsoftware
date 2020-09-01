@@ -55,206 +55,6 @@ void MainWindow::createActions()
     fileMenu->addAction(redo);
 }
 
-void MainWindow::addEmployee()
-{
-    QStringList data = this->employeeEditor->getData();
-    if(this->company->getDepartments()->value(this->currentDepartment->getName())->getEmployees()
-            ->value(Employee::getId(data[0], data[1], data[2], data[3], data[4].toUInt())) != 0)
-    {
-        this->statusBar()->showMessage("Такой работник уже существует");
-        return;
-    }
-    CommandAddEmployee* command = new CommandAddEmployee(this->company, this->currentDepartment,
-                            data[0], data[1], data[2], data[3], data[4].toUInt());
-    executeCommand(command);
-}
-
-void MainWindow::editCompany(const QModelIndex &index)
-{
-    QStandardItem* item = this->company->itemFromIndex(index.siblingAtColumn(0));
-    if(index.parent() != QModelIndex())
-    {
-        this->currentEmployee = static_cast<Employee*>(item);
-        this->employeeEditor = new EmployeeEditor(this->currentEmployee);
-        this->employeeEditor->show();
-        connect(this->employeeEditor, &EmployeeEditor::accepted, this, &MainWindow::editEmployee);
-    }
-}
-
-void MainWindow::editEmployee()
-{
-    QStringList data = this->employeeEditor->getData();
-    if(this->company->getDepartments()->value(this->currentDepartment->getName())->getEmployees()
-            ->value(Employee::getId(data[0], data[1], data[2], data[3], data[4].toUInt())) != 0)
-    {
-        this->statusBar()->showMessage("Такой работник уже существует");
-        return;
-    }
-
-    CommandEditEmployee* command = new CommandEditEmployee(this->company, this->currentDepartment,
-                    this->currentEmployee, data[0], data[1], data[2], data[3], data[4].toUInt());
-    executeCommand(command);
-    if(this->employeeEditor != nullptr)
-    {
-        this->employeeEditor->disconnect();
-        this->employeeEditor->deleteLater();
-    }
-    this->mainWidget->setDep(this->currentDepartment->getName(),
-                this->currentDepartment->getCountEmployees(), this->currentDepartment->getAverageSalary());
-}
-
-void MainWindow::removeEmployee()
-{
-    CommandRemoveEmployee* command = new CommandRemoveEmployee(this->company, this->currentDepartment, this->currentEmployee);
-    executeCommand(command);
-}
-
-void MainWindow::openFile()
-{
-    this->path = QFileDialog::getOpenFileName(this, tr("Open File"), ".", tr("XML files (*.xml)"));
-    QFile xmlFile(path.toString());
-    if(!this->path.isEmpty() && xmlFile.open(QIODevice::ReadOnly))
-    {
-        QXmlStreamReader reader(&xmlFile);
-        QString depName;
-        QString name;
-        QString surname;
-        QString middleName;
-        QString function;
-        uint32_t salary;
-        while (!reader.atEnd() && reader.readNext())
-        {
-            if(reader.isStartElement())
-            {
-                if(reader.name() == "departments"){
-                    newCompany();
-                } else if(reader.name() == "department") {
-                    depName = reader.attributes().value("name").toString().trimmed();
-                    if(depName.isEmpty()){
-                        this->currentDepartment = this->company->addDepartment("Неизвестный отдел");
-                    }else{
-                        this->currentDepartment = this->company->addDepartment(depName);
-                    }
-                }else if(reader.name() == "employment"){
-                    for (int i = 0; i < 5; ++i)
-                    {
-                        reader.readNextStartElement();
-                        if( reader.name() == "name"){
-                            name = reader.readElementText();
-                            if(name.isEmpty())
-                                name = "No Data";
-                        }else if (reader.name() == "surname"){
-                            surname = reader.readElementText();
-                        }else if (reader.name() == "middleName"){
-                            middleName = reader.readElementText();
-                        }else if (reader.name() == "function"){
-                            function = reader.readElementText();
-                        }else if (reader.name() == "salary"){
-                            salary = reader.readElementText().toInt();
-                        }
-                    }
-                    this->currentDepartment->addEmployee(name, surname, middleName, function, salary);
-                }
-            }
-        }
-    }
-}
-
-void MainWindow::saveFile()
-{
-    if(this->company)
-    {
-        QFile xmlFile(this->path.toString());
-        if(xmlFile.open(QIODevice::WriteOnly))
-        {
-            QXmlStreamWriter writer(&xmlFile);
-            writer.setAutoFormatting(true);
-            if(!this->company->getDepartments()->isEmpty()){
-                writer.writeStartDocument();
-                writer.writeStartElement("departments");
-
-                QMapIterator<QString, Department*> iter (*(this->company)->getDepartments());
-
-                while(iter.hasNext())
-                {
-                    iter.next();
-                    Department *department = iter.value();
-                    writer.writeStartElement("department");
-                    writer.writeAttribute("name", department->getName());
-                    writer.writeStartElement("employments");
-                    QMapIterator<int, Employee*> iterator (*department->getEmployees());
-                    while(iterator.hasNext())
-                    {
-                        iterator.next();
-                        Employee* employee = iterator.value();
-                        writer.writeStartElement("employment");
-                        writer.writeTextElement("surname", employee->getSurname());
-                        writer.writeTextElement("name", employee->getName());
-                        writer.writeTextElement("middleName", employee->getMiddleName());
-                        writer.writeTextElement("function", employee->getFunction());
-                        writer.writeTextElement("salary", QString::number(employee->getSalary()));
-                        writer.writeEndElement();
-                    }
-                    writer.writeEndElement();
-                    writer.writeEndElement();
-                }
-                writer.writeEndElement();
-                writer.writeEndDocument();
-                xmlFile.close();
-            }else{
-                writer.writeStartDocument();
-                writer.writeEndDocument();
-                xmlFile.close();
-            }
-        }
-    }
-}
-
-void MainWindow::openNewCompanyDialog()
-{
-    this->path = QFileDialog::getSaveFileName(this, tr("Save Xml"), ".", tr("Xml files (*.xml)"));
-    if(this->path.isValid()){
-        if(this->company){
-            saveFile();
-            newCompany();
-        }else{
-            saveFile();
-            delete this->company;
-            clearHistory();
-            newCompany();
-        }
-    }
-}
-
-void MainWindow::newCompany()
-{
-    if(!this->history.isEmpty())
-        clearHistory();
-    this->company = new Company();
-    this->mainWidget->view()->setModel(company);
-    this->mainWidget->setEnabled(true);
-    connect(this->mainWidget->view()->selectionModel(), &QItemSelectionModel::selectionChanged, this->mainWidget, &MainWidget::setEnableButtons);
-}
-
-void MainWindow::openNewEployeeDialog()
-{
-    this->employeeEditor = new EmployeeEditor();
-    connect(this->employeeEditor, &EmployeeEditor::accepted, this, &MainWindow::addEmployee);
-    this->employeeEditor->show();
-}
-
-void MainWindow::setCurrentDepartment(const QModelIndex &index)
-{
-    this->currentDepartment = static_cast<Department*>(this->company->itemFromIndex(index));
-    this->mainWidget->setDep(this->currentDepartment->getName(), this->currentDepartment->getCountEmployees(),
-                                this->currentDepartment->getAverageSalary());
-}
-
-void MainWindow::setCurrentEmployee(const QModelIndex &index)
-{
-    this->currentEmployee = static_cast<Employee*>(this->company->itemFromIndex(index));
-}
-
 void MainWindow::addDepartment(QString name)
 {
     if(name.isEmpty())
@@ -336,4 +136,203 @@ MainWindow::~MainWindow() noexcept
     this->mainWidget->disconnect();
     clearHistory();
     delete this->company;
+}
+
+void MainWindow::addEmployee()
+{
+    QStringList data = this->employeeEditor->getData();
+    if(this->company->getDepartments()->value(this->currentDepartment->getName())->getEmployees()
+            ->value(Employee::getId(data[0], data[1], data[2], data[3], data[4].toUInt())) != 0)
+    {
+        this->statusBar()->showMessage("Такой работник уже существует");
+        return;
+    }
+    CommandAddEmployee* command = new CommandAddEmployee(this->company, this->currentDepartment,
+                            data[0], data[1], data[2], data[3], data[4].toUInt());
+    executeCommand(command);
+}
+
+void MainWindow::editCompany(const QModelIndex &index)
+{
+    QStandardItem* item = this->company->itemFromIndex(index.siblingAtColumn(0));
+    if(index.parent() != QModelIndex())
+    {
+        this->currentEmployee = static_cast<Employee*>(item);
+        this->employeeEditor = new EmployeeEditor(this->currentEmployee);
+        this->employeeEditor->show();
+        connect(this->employeeEditor, &EmployeeEditor::accepted, this, &MainWindow::editEmployee);
+    }
+}
+
+void MainWindow::editEmployee()
+{
+    QStringList data = this->employeeEditor->getData();
+    if(this->company->getDepartments()->value(this->currentDepartment->getName())->getEmployees()
+            ->value(Employee::getId(data[0], data[1], data[2], data[3], data[4].toUInt())) != 0)
+    {
+        this->statusBar()->showMessage("Такой работник уже существует");
+        return;
+    }
+
+    CommandEditEmployee* command = new CommandEditEmployee(this->company, this->currentDepartment,
+                    this->currentEmployee, data[0], data[1], data[2], data[3], data[4].toUInt());
+    executeCommand(command);
+    if(this->employeeEditor != nullptr)
+    {
+        this->employeeEditor->disconnect();
+        this->employeeEditor->deleteLater();
+    }
+    this->mainWidget->setDep(this->currentDepartment->getName(),
+                this->currentDepartment->getCountEmployees(), this->currentDepartment->getAverageSalary());
+}
+
+void MainWindow::removeEmployee()
+{
+    CommandRemoveEmployee* command = new CommandRemoveEmployee(this->company, this->currentDepartment, this->currentEmployee);
+    executeCommand(command);
+}
+
+void MainWindow::openNewCompanyDialog()
+{
+    this->path = QFileDialog::getSaveFileName(this, tr("Save Xml"), ".", tr("Xml files (*.xml)"));
+    if(this->path.isValid()){
+        if(this->company){
+            saveFile();
+            newCompany();
+        }else{
+            saveFile();
+            delete this->company;
+            clearHistory();
+            newCompany();
+        }
+    }
+}
+
+void MainWindow::newCompany()
+{
+    if(!this->history.isEmpty())
+        clearHistory();
+    this->company = new Company();
+    this->mainWidget->view()->setModel(company);
+    this->mainWidget->setEnabled(true);
+    connect(this->mainWidget->view()->selectionModel(), &QItemSelectionModel::selectionChanged, this->mainWidget, &MainWidget::setEnableButtons);
+}
+
+void MainWindow::openNewEployeeDialog()
+{
+    this->employeeEditor = new EmployeeEditor();
+    connect(this->employeeEditor, &EmployeeEditor::accepted, this, &MainWindow::addEmployee);
+    this->employeeEditor->show();
+}
+
+void MainWindow::setCurrentDepartment(const QModelIndex &index)
+{
+    this->currentDepartment = static_cast<Department*>(this->company->itemFromIndex(index));
+    this->mainWidget->setDep(this->currentDepartment->getName(), this->currentDepartment->getCountEmployees(),
+                                this->currentDepartment->getAverageSalary());
+}
+
+void MainWindow::setCurrentEmployee(const QModelIndex &index)
+{
+    this->currentEmployee = static_cast<Employee*>(this->company->itemFromIndex(index));
+}
+
+void MainWindow::openFile()
+{
+    this->path = QFileDialog::getOpenFileName(this, tr("Open File"), ".", tr("XML files (*.xml)"));
+    QFile xmlFile(path.toString());
+    if(!this->path.isEmpty() && xmlFile.open(QIODevice::ReadOnly))
+    {
+        QXmlStreamReader reader(&xmlFile);
+        QString depName;
+        QString name;
+        QString surname;
+        QString middleName;
+        QString function;
+        uint32_t salary;
+        while (!reader.atEnd() && reader.readNext())
+        {
+            if(reader.isStartElement())
+            {
+                if(reader.name() == "departments"){
+                    newCompany();
+                } else if(reader.name() == "department") {
+                    depName = reader.attributes().value("name").toString().trimmed();
+                    if(depName.isEmpty()){
+                        this->currentDepartment = this->company->addDepartment("Неизвестный отдел");
+                    }else{
+                        this->currentDepartment = this->company->addDepartment(depName);
+                    }
+                }else if(reader.name() == "employment"){
+                    for (int i = 0; i < 5; ++i)
+                    {
+                        reader.readNextStartElement();
+                        if(reader.name() == "name"){
+                            name = reader.readElementText();
+                            if(name.isEmpty())
+                                name = "No Data";
+                        }else if (reader.name() == "surname"){
+                            surname = reader.readElementText();
+                        }else if (reader.name() == "middleName"){
+                            middleName = reader.readElementText();
+                        }else if (reader.name() == "function"){
+                            function = reader.readElementText();
+                        }else if (reader.name() == "salary"){
+                            salary = reader.readElementText().toUInt();
+                        }
+                    }
+                    this->currentDepartment->addEmployee(name, surname, middleName, function, salary);
+                }
+            }
+        }
+    }
+}
+
+void MainWindow::saveFile()
+{
+    if(this->company)
+    {
+        QFile xmlFile(this->path.toString());
+        if(xmlFile.open(QIODevice::WriteOnly))
+        {
+            QXmlStreamWriter writer(&xmlFile);
+            writer.setAutoFormatting(true);
+            if(!this->company->getDepartments()->isEmpty()){
+                writer.writeStartDocument();
+                writer.writeStartElement("departments");
+
+                QMapIterator<QString, Department*> iter (*(this->company)->getDepartments());
+                while(iter.hasNext())
+                {
+                    iter.next();
+                    Department *department = iter.value();
+                    writer.writeStartElement("department");
+                    writer.writeAttribute("name", department->getName());
+                    writer.writeStartElement("employments");
+                    QMapIterator<int, Employee*> iterator (*department->getEmployees());
+                    while(iterator.hasNext())
+                    {
+                        iterator.next();
+                        Employee* employee = iterator.value();
+                        writer.writeStartElement("employment");
+                        writer.writeTextElement("surname", employee->getSurname());
+                        writer.writeTextElement("name", employee->getName());
+                        writer.writeTextElement("middleName", employee->getMiddleName());
+                        writer.writeTextElement("function", employee->getFunction());
+                        writer.writeTextElement("salary", QString::number(employee->getSalary()));
+                        writer.writeEndElement();
+                    }
+                    writer.writeEndElement();
+                    writer.writeEndElement();
+                }
+                writer.writeEndElement();
+                writer.writeEndDocument();
+                xmlFile.close();
+            }else{
+                writer.writeStartDocument();
+                writer.writeEndDocument();
+                xmlFile.close();
+            }
+        }
+    }
 }
