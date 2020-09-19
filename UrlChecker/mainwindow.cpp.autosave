@@ -83,9 +83,9 @@ void MainWindow::openFile()
             }
         }
 
-        for(int i = 0; i < urls.count(); ++i)
-            if(!urls[i].isValid())
-                urls.removeOne(urls[i]);
+//        for(int i = 0; i < urls.count(); ++i)
+//            if(!urls[i].isValid())
+//                urls.removeOne(urls[i]);
 
         this->ui->table->setRowCount(this->urls.count());
         this->ui->table->setColumnCount(3);
