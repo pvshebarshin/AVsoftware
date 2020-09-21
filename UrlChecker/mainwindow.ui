@@ -14,47 +14,79 @@
    <string>MainWindow</string>
   </property>
   <widget class="QWidget" name="centralwidget">
-   <layout class="QGridLayout" name="gridLayout_2">
+   <layout class="QGridLayout" name="gridLayout">
     <item row="0" column="0">
      <widget class="QTableWidget" name="table"/>
     </item>
     <item row="0" column="1">
-     <layout class="QGridLayout" name="gridLayout">
+     <layout class="QVBoxLayout" name="verticalLayout_2">
       <property name="sizeConstraint">
        <enum>QLayout::SetFixedSize</enum>
       </property>
-      <item row="0" column="0" colspan="2">
-       <widget class="QLabel" name="label">
-        <property name="text">
-         <string>Введите время в милли секундах</string>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout">
+        <property name="sizeConstraint">
+         <enum>QLayout::SetFixedSize</enum>
         </property>
-       </widget>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout">
+          <item>
+           <widget class="QLabel" name="label">
+            <property name="text">
+             <string>Время</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QLineEdit" name="time"/>
+          </item>
+         </layout>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="radioButton_s">
+          <property name="text">
+           <string>В секундах</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="radioButton_ms">
+          <property name="text">
+           <string>В мили секундах</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QRadioButton" name="radioButton_ns">
+          <property name="text">
+           <string>В микро секундах</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
       </item>
-      <item row="1" column="0">
-       <widget class="QLineEdit" name="time"/>
-      </item>
-      <item row="2" column="0">
+      <item>
        <widget class="QPushButton" name="beginButton">
         <property name="text">
          <string>Начать</string>
         </property>
        </widget>
       </item>
-      <item row="3" column="0">
+      <item>
        <widget class="QPushButton" name="exitButton">
         <property name="text">
          <string>Остановить процесс</string>
         </property>
        </widget>
       </item>
-      <item row="4" column="0">
+      <item>
        <widget class="QPushButton" name="redButton">
         <property name="text">
          <string>Выход</string>
         </property>
        </widget>
       </item>
-      <item row="5" column="0">
+      <item>
        <spacer name="verticalSpacer">
         <property name="orientation">
          <enum>Qt::Vertical</enum>

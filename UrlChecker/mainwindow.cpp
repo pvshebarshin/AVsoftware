@@ -83,6 +83,12 @@ void MainWindow::on_beginButton_clicked()
         return;
     }
 
+    if(!ui->radioButton_ms->isChecked() && !ui->radioButton_s->isChecked() && !ui->radioButton_ns->isChecked())
+    {
+        this->statusBar()->showMessage("Вы должны  выбрать измерение времени");
+        return;
+    }
+
     this->ui->time->setEnabled(false);
     this->ui->beginButton->setEnabled(false);
     this->ui->exitButton->setEnabled(true);
@@ -91,6 +97,9 @@ void MainWindow::on_beginButton_clicked()
     {
         urls[i].setInterval(this->ui->time->text().toInt());
         connectors.append(new HTTPconnector());
+        ui->radioButton_s->isChecked() ? connectors[i]->setMarker("S") :
+                    ui->radioButton_ms->isChecked() ? connectors[i]->setMarker("MS") :
+                                connectors[i]->setMarker("US");
     }
 
     for(int i = 0; i < urls.count(); ++i)

@@ -15,7 +15,8 @@ public:
     explicit HTTPconnector(QObject *parent = 0);
     ~HTTPconnector();
 
-    //Основной метод
+    //Основной переопределнный метод класса QThread
+    //для работы с http
     void run() override;
 
     //Сеттеры для установки необходимых двнных
@@ -23,9 +24,11 @@ public:
     void setIndex(int index) noexcept;
     void setInterval(int interval) noexcept;
     void setURL(URL* url) noexcept;
+    void setMarker(QString marker);
 
 
 signals:
+    //сигнал отправляющийся после обработкт запроса для записи в таблицу
     void addToTable(QString str, int time, int index);
 
 private:
@@ -33,6 +36,7 @@ private:
     int index;
     int interval;
     bool stop;
+    QString marker;
 };
 
 #endif

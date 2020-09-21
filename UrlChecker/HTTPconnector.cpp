@@ -16,6 +16,7 @@ void HTTPconnector::run()
     QNetworkAccessManager* connection;
     while(true)
     {
+        qDebug() << index;
         QEventLoop waitLoop;
         connection = new QNetworkAccessManager();
         QNetworkReply *reply = connection->get(QNetworkRequest(*url));
@@ -36,7 +37,14 @@ void HTTPconnector::run()
             emit addToTable(status, -1, this->index);
         }
 
-        msleep(interval);
+        if(marker == "S"){
+            sleep(interval);
+        } else if(marker == "MS"){
+            msleep(interval);
+        } else {
+            usleep(interval);
+        }
+
         if(stop)
         {
             delete reply;
@@ -65,4 +73,9 @@ void HTTPconnector::setInterval(int interval) noexcept
 void HTTPconnector::setURL(URL *url) noexcept
 {
     this->url = url;
+}
+
+void HTTPconnector::setMarker(QString marker)
+{
+    this->marker = marker;
 }
