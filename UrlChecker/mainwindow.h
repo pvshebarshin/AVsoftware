@@ -23,7 +23,9 @@ public:
     ~MainWindow();
 
 private:
+    // создаем меню
     void createActions() noexcept;
+
     Ui::MainWindow *ui;
     QList<URL> urls;
     QList<HTTPconnector*> connectors;

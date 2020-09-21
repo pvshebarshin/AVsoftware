@@ -31,6 +31,8 @@ void MainWindow::openFile()
     QFile xmlFile(path.toString());
     if(!path.isEmpty() && xmlFile.open(QIODevice::ReadOnly))
     {
+//        QString regexp = "^(((http|ftp)(s?)://)|(www.))(([a-zA-Z0-9-.]+(.[a-zA-Z0-9-.]+)+)|localhost)(/?)([a-zA-Z0-9-.?,'/\+&%$#_])?([\d\w./%+-=&amp;?:\&quot;',|~;])$";
+//        QRegExp regx(regexp);
         this->urls.clear();
         this->ui->table->clear();
         QXmlStreamReader reader(&xmlFile);
@@ -41,6 +43,7 @@ void MainWindow::openFile()
             {
                 if(reader.name() == "urls"){
                 } else if(reader.name() == "url") {
+//                    if(regx.exactMatch(reader.attributes().value("name").toString().trimmed()))
                     this->urls.append(URL(reader.attributes().value("name").toString().trimmed()));
                 }
             }
