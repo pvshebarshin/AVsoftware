@@ -12,15 +12,10 @@ MainWindow::MainWindow(QWidget *parent)
     this->ui->beginButton->setEnabled(false);
     this->ui->exitButton->setEnabled(false);
     this->ui->time->setValidator(new QRegExpValidator(QRegExp("[1-9]{1}[0-9]{0,15}")));
-    this->timer = new QTimer(this);
     createActions();
-    this->manager = new QNetworkAccessManager(this);
-
-    connect(manager, SIGNAL(finished(QNetworkReply*)), this, SLOT(replyFinished(QNetworkReply*)));
-    connect(timer, SIGNAL(timeout()), this, SLOT(onTimeOut()));
 }
 
-void MainWindow::createActions()
+void MainWindow::createActions() noexcept
 {
     QMenu *fileMenu = menuBar()->addMenu(tr("&Файл"));
     QAction *open= new QAction(tr("Открыть"));
@@ -28,37 +23,6 @@ void MainWindow::createActions()
     open->setStatusTip(tr("Открыть файл"));
     connect(open, &QAction::triggered, this, &MainWindow::openFile);
     fileMenu->addAction(open);
-}
-
-void MainWindow::replyFinished(QNetworkReply *reply)
-{
-    reply->deleteLater();
-    QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
-    QString status = status_code.toString();
-
-    URL* ptr = nullptr;
-    int index = -1;
-    for(int i = 0; i < urls.count(); ++i)
-    {
-        if(reply->url().toString() == urls[i].getName())
-        {
-            index = i;
-            ptr = &urls[i];
-            break;
-        }
-    }
-
-    qDebug() << status << (reply->url().toString() == ptr->getName());
-    if(ptr->isNewCode(status))
-    {
-        this->ui->table->setItem(index, 2, new QTableWidgetItem(QString::number(ptr->getTime())));
-        ptr->newTime();
-    } else {
-        ptr->addInterval();
-    }
-    ptr->setCode(status);
-    this->ui->table->setItem(index, 1, new QTableWidgetItem(ptr->getCode()));
-    timer->start(this->ui->time->text().toInt());
 }
 
 void MainWindow::openFile()
@@ -76,7 +40,6 @@ void MainWindow::openFile()
             if(reader.isStartElement())
             {
                 if(reader.name() == "urls"){
-
                 } else if(reader.name() == "url") {
                     this->urls.append(URL(reader.attributes().value("name").toString().trimmed()));
                 }
@@ -105,8 +68,6 @@ void MainWindow::openFile()
 MainWindow::~MainWindow()
 {
     delete ui;
-    delete manager;
-    delete timer;
 }
 
 void MainWindow::on_beginButton_clicked()
@@ -123,10 +84,20 @@ void MainWindow::on_beginButton_clicked()
     this->ui->exitButton->setEnabled(true);
 
     for(int i = 0; i < urls.count(); ++i)
+    {
         urls[i].setInterval(this->ui->time->text().toInt());
+        connectors.append(new HTTPconnector());
+    }
 
-    for(int i = 0; i< urls.count(); ++i)
-        this->manager->get(QNetworkRequest(urls[i]));
+    for(int i = 0; i < urls.count(); ++i)
+    {
+        connectors[i]->setIndex(i);
+        connectors[i]->setURL(&urls[i]);
+        connectors[i]->setInterval(this->ui->time->text().toInt());
+        connectors[i]->setStop(false);
+        connect(connectors[i], SIGNAL(addToTable(QString, int, int)), this, SLOT(addToTable(QString, int, int)));
+        connectors[i]->start();
+    }
 }
 
 void MainWindow::on_exitButton_clicked()
@@ -134,7 +105,10 @@ void MainWindow::on_exitButton_clicked()
     this->ui->beginButton->setEnabled(true);
     this->ui->exitButton->setEnabled(false);
     this->ui->time->setEnabled(true);
-    timer->stop();
+    for(int i = 0; i < urls.count(); ++i)
+    {
+        connectors[i]->setStop(true);
+    }
     qDebug() << "stop";
 }
 
@@ -143,8 +117,16 @@ void MainWindow::on_time_textChanged(const QString &arg1)
     this->statusBar()->clearMessage();
 }
 
-void MainWindow::onTimeOut()
+void MainWindow::addToTable(QString str, int time, int index)
 {
-    for(int i = 0; i< urls.count(); ++i)
-        this->manager->get(QNetworkRequest(urls[i]));
+    if(time == -1 && str != ""){
+        this->ui->table->setItem(index, 1, new QTableWidgetItem(str));
+    }else if (time != -1 && str != ""){
+        this->ui->table->setItem(index, 1, new QTableWidgetItem(str));
+        this->ui->table->setItem(index, 2, new QTableWidgetItem(QString::number(time)));
+    } else {
+        this->ui->table->setItem(index, 1, new QTableWidgetItem("Ошибка подключения"));
+        this->ui->table->setItem(index, 2, new QTableWidgetItem(
+                    time == -1 ? "Ошибка подключения" : QString::number(time)));
+    }
 }

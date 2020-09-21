@@ -2,7 +2,7 @@
 #define MAINWINDOW_H
 
 #include "URL.h"
-
+#include "HTTPconnector.h"
 #include <QList>
 #include <QMainWindow>
 #include <QNetworkAccessManager>
@@ -23,18 +23,16 @@ public:
     ~MainWindow();
 
 private:
-    void createActions();
+    void createActions() noexcept;
     Ui::MainWindow *ui;
     QList<URL> urls;
-    QNetworkAccessManager* manager;
-    QTimer* timer;
+    QList<HTTPconnector*> connectors;
 
 private slots:
-    void replyFinished(QNetworkReply* reply);
     void openFile();
     void on_beginButton_clicked();
     void on_exitButton_clicked();
     void on_time_textChanged(const QString &arg1);
-    void onTimeOut();
+    void addToTable(QString str, int time, int index);
 };
 #endif
