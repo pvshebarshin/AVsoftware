@@ -61,6 +61,7 @@ void MainWindow::openFile()
         }
         this->ui->table->setHorizontalHeaderLabels(QStringList()
                         << "URL" << "Код ответа" << "Время изменения статуса");
+        this->ui->table->resizeColumnsToContents();
         this->ui->beginButton->setEnabled(true);
     }
 }
@@ -106,10 +107,7 @@ void MainWindow::on_exitButton_clicked()
     this->ui->exitButton->setEnabled(false);
     this->ui->time->setEnabled(true);
     for(int i = 0; i < urls.count(); ++i)
-    {
         connectors[i]->setStop(true);
-    }
-    qDebug() << "stop";
 }
 
 void MainWindow::on_time_textChanged(const QString &arg1)
@@ -129,4 +127,11 @@ void MainWindow::addToTable(QString str, int time, int index)
         this->ui->table->setItem(index, 2, new QTableWidgetItem(
                     time == -1 ? "Ошибка подключения" : QString::number(time)));
     }
+}
+
+void MainWindow::on_redButton_clicked()
+{
+    for(int i = 0; i < urls.count(); ++i)
+        connectors[i]->setStop(true);
+    this->close();
 }

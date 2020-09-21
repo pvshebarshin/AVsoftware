@@ -16,8 +16,6 @@ void HTTPconnector::run()
     QNetworkAccessManager* connection;
     while(true)
     {
-        qDebug() << "run " << index << *url;
-
         QEventLoop waitLoop;
         connection = new QNetworkAccessManager();
         QNetworkReply *reply = connection->get(QNetworkRequest(*url));
@@ -26,7 +24,7 @@ void HTTPconnector::run()
 
         QVariant status_code = reply->attribute(QNetworkRequest::HttpStatusCodeAttribute);
         QString status = status_code.toString();
-        qDebug() << status << QString::number(this->index);
+
         if(url->isNewCode(status)){
             int temp = url->getTime();
             url->newTime();
@@ -39,7 +37,8 @@ void HTTPconnector::run()
         }
 
         msleep(interval);
-        if(stop){
+        if(stop)
+        {
             delete reply;
             delete connection;
             return;

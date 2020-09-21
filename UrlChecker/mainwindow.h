@@ -34,5 +34,6 @@ private slots:
     void on_exitButton_clicked();
     void on_time_textChanged(const QString &arg1);
     void addToTable(QString str, int time, int index);
+    void on_redButton_clicked();
 };
 #endif
