@@ -131,13 +131,14 @@ void MainWindow::addToTable(QString str, int time, int index)
 {
     if(time == -1 && str != ""){
         this->ui->table->setItem(index, 1, new QTableWidgetItem(str));
-    }else if (time != -1 && str != ""){
+    }else if(time != -1 && str != ""){
         this->ui->table->setItem(index, 1, new QTableWidgetItem(str));
         this->ui->table->setItem(index, 2, new QTableWidgetItem(QString::number(time)));
-    } else {
+    } else if(time == -1 && str == ""){
         this->ui->table->setItem(index, 1, new QTableWidgetItem("Ошибка подключения"));
-        this->ui->table->setItem(index, 2, new QTableWidgetItem(
-                    time == -1 ? "Ошибка подключения" : QString::number(time)));
+    } else {
+        this->ui->table->setItem(index, 1, new QTableWidgetItem(str));
+        this->ui->table->setItem(index, 2, new QTableWidgetItem(QString::number(time)));
     }
 }
 
